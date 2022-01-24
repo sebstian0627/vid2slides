@@ -38,6 +38,7 @@ def vid_imgs(file_path, folder_name='D:\\temp_project\\'):
             temp2 = cv2.cvtColor(prev_frame, cv2.COLOR_BGR2GRAY)
             temp2 = temp2/(np.linalg.norm(temp2))
             print("HELLo")
+            print("Another ")
 
             # print(type(temp1))
             alpha = np.sum(np.abs(temp1-temp2))
