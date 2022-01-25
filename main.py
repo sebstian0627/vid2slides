@@ -45,7 +45,7 @@ def vid_imgs(file_path, folder_name='D:\\temp_project\\'):
             temp_list.append(round(alpha))
             # if count >50:
             #     break
-            if alpha >20:
+            if alpha > 20:
                 # if count <50:
 
                     # cv2.imshow(str(slide_count),frame)
