@@ -108,4 +108,5 @@ if __name__ == '__main__':
     # vid_trimmer("D:\\downloads\\Link for class wednesday 12-01-22-20220112_110314-Meeting Recording.mp4")
     temp = vid_imgs("D:\\downloads\\Link for class wednesday 12-01-22-20220112_110314-Meeting Recording.mp4")
     images2pdf(temp, "D:\\", "first.pdf")
+    print("hello")
     
