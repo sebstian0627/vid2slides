@@ -45,13 +45,13 @@ def vid_imgs(file_path, folder_name='D:\\temp_project\\'):
             temp_list.append(round(alpha))
             # if count >50:
             #     break
-            if alpha >20:
+            if alpha > 20:
                 # if count <50:
 
                     # cv2.imshow(str(slide_count),frame)
                 cv2.imwrite(folder_name+ str(slide_count)+".jpg", frame)
 
-                print("I LUB U")
+                
                 slide_count+=1
             prev_frame= frame
         elif not ret:
