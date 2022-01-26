@@ -51,7 +51,7 @@ def vid_imgs(file_path, folder_name='D:\\temp_project\\'):
                     # cv2.imshow(str(slide_count),frame)
                 cv2.imwrite(folder_name+ str(slide_count)+".jpg", frame)
 
-                print("I LUB U")
+                
                 slide_count+=1
             prev_frame= frame
         elif not ret:
