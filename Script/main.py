@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
-from timeit import timeit
+from time import time
 import os
+from PIL import Image
 # import matplotlib.pyplot as plt
 
 
@@ -12,12 +13,10 @@ def make_histogram(l):
     return d
 
 
-def vid_imgs(file_path, folder_name='D:\\temp_project\\'):
+def vid_imgs(file_path, folder_name='D:\\temp_project\\', thresh=20):
     cap = cv2.VideoCapture(file_path)
-    # os.mkdir(folder_name)
-    # os.chdir(folder_name)
     if not cap.isOpened():
-        print("ERROR, chutiya file hai")
+        print("ERROR! Corrupted Video")
     ret, frame = cap.read()
     frame_shape = frame.shape
     prev_frame = frame
@@ -25,10 +24,12 @@ def vid_imgs(file_path, folder_name='D:\\temp_project\\'):
     count = 0
     fps = int(cap.get(cv2.CAP_PROP_FPS))
     temp_list=[]
-    start = timeit()
+    start = time()
     slide_count = 0
+    img_list=[]
     while cap.isOpened():
         count += 1
+        # print(count)
         if count%14000==0:
             print(count/14)
         ret, frame = cap.read()
@@ -37,19 +38,13 @@ def vid_imgs(file_path, folder_name='D:\\temp_project\\'):
             temp1 = temp1/(np.linalg.norm(temp1))
             temp2 = cv2.cvtColor(prev_frame, cv2.COLOR_BGR2GRAY)
             temp2 = temp2/(np.linalg.norm(temp2))
-            print("HELLo")
-            print("Another ")
-
-            # print(type(temp1))
             alpha = np.sum(np.abs(temp1-temp2))
             temp_list.append(round(alpha))
-            # if count >50:
-            #     break
-            if alpha > 20:
-                # if count <50:
+            
+            if alpha > thresh:
+                
 
-                    # cv2.imshow(str(slide_count),frame)
-                cv2.imwrite(folder_name+ str(slide_count)+".jpg", frame)
+                img_list.append(frame)
 
                 
                 slide_count+=1
@@ -58,16 +53,15 @@ def vid_imgs(file_path, folder_name='D:\\temp_project\\'):
             break
 
         # print(count, "hello I am still here")
-    end = timeit()
+    end = time()
     cap.release()
 
 
     print(len(temp_list))
-    # print(temp_list[0])
     print(make_histogram(temp_list))
     print("TOTAL TIME TAKEN", end-start)
 
-    return make_histogram(temp_list)
+    return img_list
 
 
 def vid_trimmer(file_path):
@@ -90,15 +84,28 @@ def vid_trimmer(file_path):
             out.write(frame)
         if count == 10000:
             break
-    print("Hi I am here")
     out.release()
     cap.release()
+
+def images2pdf(img_list,pdf_path,pdf_name):
+    # if(img_list==None or len(img_list)==0):
+    #     print("wrong data type, please check input carefully")
+    #     return
+    # print(img_list)
+    if len(img_list)==1:
+        img_list[0] = img_list[0].convert('RGB')
+        img_list[0].save(pdf_path + pdf_name)
+    img_list1 = [Image.fromarray(i) for i in img_list]
+    # img_list1 = [i.convert('RGB') for i in img_list1]
+    im1 = img_list1[0]
+    im1.save(pdf_path+pdf_name,save_all=True, append_images = img_list1[1:])
+    print("ALL IMAGES ARE SAVED SUCCESSFULLY AS PDF AT", pdf_path)
+
 
 
 if __name__ == '__main__':
     # print(os.getcwd())
     # vid_trimmer("D:\\downloads\\Link for class wednesday 12-01-22-20220112_110314-Meeting Recording.mp4")
-    vid_imgs("D:\\downloads\\Link for class wednesday 12-01-22-20220112_110314-Meeting Recording.mp4")
-    # print("hello I am completed")
-    # os.chdir("D:\\downloads\\")
-    # print((os.system('dir /OD')))
+    temp = vid_imgs("D:\\downloads\\Link for class wednesday 12-01-22-20220112_110314-Meeting Recording.mp4")
+    images2pdf(temp, "D:\\", "first.pdf")
+    
